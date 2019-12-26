@@ -8,7 +8,12 @@ For some of our research, we've discovered many JSONified nested arrays (Elastic
 Stil ruminating.
 
 ## Complexity
-Partially inspired by Kolmogorov complexity, we implement a four-metric scoring system for complexity which should allow us to distill how complex certain document structures in ElasticSearch results are:
+Partially inspired by Kolmogorov complexity, we implement a five-metric scoring system for complexity which should allow us to distill how complex certain document structures in ElasticSearch results are:
+
+**Approximate dimensions:**
+* Count how many items are in the widest array at all depths, returning a list of depth->sum(items) (*shape*)
+* ... and count how many total arrays there are in this nested array (*breadth*)
+* maybe others?
 
 **Full structural complexity:**
 * Start a counter at 0
