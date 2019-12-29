@@ -5,7 +5,7 @@ For some of our research, we've discovered many JSONified nested arrays (Elastic
 2. Several of the ElasticSearch results could have been discovered by simply looking for complex nested arrays, ex. deep, inconsistent, broad structure.
 
 ## Signatures
-Stil ruminating. Fuzzy hashing maybe. But that could be hard on our workflow.
+Stil ruminating. Fuzzy hashing maybe. But that could be hard on our workflow unless we add a new datastore and are comfortable with O(N^2) complexity on certain checks.
 
 ## Complexity
 Partially inspired by Kolmogorov complexity, we implement a five-metric scoring system for complexity which should allow us to distill how complex certain document structures in ElasticSearch results are:
@@ -21,12 +21,12 @@ Partially inspired by Kolmogorov complexity, we implement a five-metric scoring 
 * For all other values, add 0.1
 
 **Item duplication-averse DSM (IDA DSM):**
-* Remove any key->value pairs that are duplicated (removing both the original and all duplicates)
+* Remove any key->value pairs that are duplicated (removing the duplicates but not the original)
 * Recompute DSM
 
 **Type duplication-averse DSM (TDA DSM):**
-* For any value that is not mapping to another array, make the value a string representation of what type it is ('int', 'str', etc.)
-* Remove any key->value pairs that are duplicated elsewhere (removing both the original and all duplicates), ignoring key->array mappings
+* For any key that is not mapping to another array, make the value a string representation of what type it is ('int', 'str', etc.)
+* Remove any key->value pairs that are duplicated elsewhere (removing the duplicates but not the original), ignoring key->array mappings
 * Recompute DSM
 
 **~Skeleton~ Pile of bones DSM (POB DSM):**
