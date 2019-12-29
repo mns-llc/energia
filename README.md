@@ -5,32 +5,32 @@ For some of our research, we've discovered many JSONified nested arrays (Elastic
 2. Several of the ElasticSearch results could have been discovered by simply looking for complex nested arrays, ex. deep, inconsistent, broad structure.
 
 ## Signatures
-Stil ruminating.
+Stil ruminating. Fuzzy hashing maybe. But that could be hard on our workflow.
 
 ## Complexity
 Partially inspired by Kolmogorov complexity, we implement a five-metric scoring system for complexity which should allow us to distill how complex certain document structures in ElasticSearch results are:
 
-**Approximate dimensions:**
+**Approximate array dimensions:**
 * Count how many items are in the widest array at all depths, returning a list of depth->sum(items) (*shape*)
 * ... and count how many total arrays there are in this nested array (*breadth*)
 * maybe others?
 
-**Full structural complexity:**
+**Document structural complexity (DSM):**
 * Start a counter at 0
 * For each value that maps to another array, add 1
 * For all other values, add 0.1
 
-**Cleaned data structural complexity:**
+**Item duplication-averse DSM (IDA DSM):**
 * Remove any key->value pairs that are duplicated (removing both the original and all duplicates)
-* Recompute structural complexity
+* Recompute DSM
 
-**Cleaned key structural complexity:**
-* For any value that is not mapping to another array, null the value
+**Type duplication-averse DSM (TDA DSM):**
+* For any value that is not mapping to another array, make the value a string representation of what type it is ('int', 'str', etc.)
 * Remove any key->value pairs that are duplicated elsewhere (removing both the original and all duplicates), ignoring key->array mappings
-* Recompute structural complexity
+* Recompute DSM
 
-**Skeleton structural complexity:**
+**~Skeleton~ Pile of bones DSM (POB DSM):**
 * Flatten nested array into one exceptionally long array
 * For any keys that should have mapped to an array, recreate them as null
 * Remove any key->value pairs that are duplicated elsewhere (removing both the original and all duplicates)
-* Count the number of keys remaining and multiply by 0.1
+* Recompute DSM
